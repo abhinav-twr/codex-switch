@@ -158,6 +158,19 @@ pwsh -File .\uninstall.ps1 -PurgeProfiles   # logs every account out (no undo)
 | `install.ps1` | Copies/hardlinks both scripts to `~\.codex`, wires the profile |
 | `uninstall.ps1` | Removes the profile block and scripts |
 | `HOW-IT-WORKS.md` | Architecture and function reference |
+| `SPEC.md` | Language-agnostic behaviour contract — use this to port the tool |
+
+## Porting to another shell or language
+
+The design is not PowerShell-specific. **[SPEC.md](SPEC.md)** states the invariants, the storage
+and credential contracts, the resolution algorithm, the login flow, and 16 acceptance tests —
+everything needed to rebuild this in bash, Python or Node without reverse-engineering the code.
+
+If you are an **agent** asked to make codex-switch work on another platform: implement `SPEC.md`,
+then run its acceptance tests. The `.ps1` files are one implementation, not the definition.
+
+Currently implemented: PowerShell (Windows, macOS, Linux via `pwsh`).
+Not yet implemented: bash/zsh, Python.
 
 ## Notes & limits
 

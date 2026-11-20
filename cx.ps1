@@ -12,6 +12,9 @@
 #
 # Note: $env:CODEX_HOME stays set after the call, so a bare `codex` in the
 # same shell keeps using the account you picked.
+#
+# Porting to another shell or language? Read SPEC.md - it is the contract,
+# this file is one implementation of it.
 
 $global:CodexProfilesRoot = Join-Path (Join-Path $HOME '.codex') 'profiles'
 

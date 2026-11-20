@@ -299,6 +299,14 @@ characters and emoji depending on code page.
 | :--- | :--- |
 | No quota check | `ok` means "has tokens", not "has headroom". Probing costs API calls, so it is opt-in by design. |
 | Plaintext tokens | Same as the CLI's own storage. `profiles\` deserves password-file treatment. |
-| Windows-first | No Windows-only API is used, but only Windows is tested. |
+| Windows-tested only | Paths and profile wiring are platform-aware, but only Windows has actually been run. macOS/Linux should work with `pwsh` 7+; untested. |
+
+---
+
+## Implementing this elsewhere
+
+This document explains *this* implementation. For a port to bash, Python or Node — or for an
+agent making a version that runs on another platform — use **[SPEC.md](SPEC.md)** instead: it
+states the invariants, the contracts and the acceptance tests, with no PowerShell in it.
 | No expiry warning | `access_token` carries an `exp` claim that could be decoded locally to warn about dead tokens; not implemented. |
 | Sequential logins | One browser flow at a time, by design — parallel OAuth callbacks would fight over the local port. |
