@@ -48,13 +48,21 @@ foreach ($f in $files) {
 
     $mode = 'copy'
     if ($Link) {
+        # Hardlink works on Windows and on same-volume Unix paths; symlink is the
+        # Unix fallback when the repo lives on another filesystem.
         try {
             New-Item -ItemType HardLink -Path $d -Target $s -Force | Out-Null
             $mode = 'hardlink'
         }
         catch {
-            Copy-Item $s $d -Force
-            $mode = 'copy (hardlink unavailable)'
+            try {
+                New-Item -ItemType SymbolicLink -Path $d -Target $s -Force | Out-Null
+                $mode = 'symlink'
+            }
+            catch {
+                Copy-Item $s $d -Force
+                $mode = 'copy (link unavailable)'
+            }
         }
     }
     else {
@@ -66,14 +74,22 @@ foreach ($f in $files) {
 if (-not $NoProfile) {
     $block = @(
         '# >>> codex-switch >>>'
-        'if (Test-Path -LiteralPath "$HOME\.codex\cx.ps1") { . "$HOME\.codex\cx.ps1" }'
+        'if (Test-Path -LiteralPath "$HOME/.codex/cx.ps1") { . "$HOME/.codex/cx.ps1" }'
         '# <<< codex-switch <<<'
     ) -join "`r`n"
 
-    $targets = @(
-        (Join-Path $HOME 'Documents\WindowsPowerShell\profile.ps1'),  # Windows PowerShell 5.1
-        (Join-Path $HOME 'Documents\PowerShell\profile.ps1')          # PowerShell 7+
-    )
+    # Profile locations differ per platform: Windows has separate 5.1 and 7+ trees,
+    # while macOS/Linux have a single AllHosts profile for pwsh.
+    $isWindowsHost = ($env:OS -eq 'Windows_NT')
+    $targets = if ($isWindowsHost) {
+        @(
+            (Join-Path $HOME 'Documents\WindowsPowerShell\profile.ps1'),  # Windows PowerShell 5.1
+            (Join-Path $HOME 'Documents\PowerShell\profile.ps1')          # PowerShell 7+
+        )
+    }
+    else {
+        @($PROFILE.CurrentUserAllHosts)
+    }
 
     foreach ($target in $targets) {
         $dir = Split-Path -Parent $target

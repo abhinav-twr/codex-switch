@@ -13,7 +13,7 @@
 # Note: $env:CODEX_HOME stays set after the call, so a bare `codex` in the
 # same shell keeps using the account you picked.
 
-$global:CodexProfilesRoot = Join-Path $HOME '.codex\profiles'
+$global:CodexProfilesRoot = Join-Path (Join-Path $HOME '.codex') 'profiles'
 
 function Get-CodexProfileEmail {
     param([Parameter(Mandatory)][string]$AuthPath)
@@ -77,7 +77,7 @@ function Show-CodexProfiles {
     Write-Host "  Tip:" -ForegroundColor DarkGray
     Write-Host "    cx new                log in a new account (next free slot: $next)" -ForegroundColor DarkGray
     Write-Host "    cx new acc11,acc12    log in specific slots" -ForegroundColor DarkGray
-    Write-Host "    cx 3  |  cx god       switch account    |    cx 4 exec ""hi""  run once" -ForegroundColor DarkGray
+    Write-Host "    cx 3  |  cx work      switch account    |    cx 4 exec ""hi""  run once" -ForegroundColor DarkGray
     Write-Host ""
     return $profiles
 }
@@ -95,7 +95,7 @@ function Get-NextCodexProfileName {
 function Start-CodexNewLogin {
     param([string[]]$Names)
 
-    $loginScript = Join-Path $HOME '.codex\setup-codex-profiles.ps1'
+    $loginScript = Join-Path (Join-Path $HOME '.codex') 'setup-codex-profiles.ps1'
     if (-not (Test-Path -LiteralPath $loginScript)) {
         Write-Host "Login script not found: $loginScript" -ForegroundColor Red
         Write-Host "Run install.ps1 from the codex-switch repo first." -ForegroundColor Yellow
@@ -156,7 +156,7 @@ function Invoke-CodexAccount {
     $profiles = @(Get-CodexProfiles)
     if ($profiles.Count -eq 0) {
         Write-Host "No profiles in $global:CodexProfilesRoot." -ForegroundColor Red
-        Write-Host "Run setup: pwsh -File ~\.codex\setup-codex-profiles.ps1" -ForegroundColor Yellow
+        Write-Host "Run install.ps1 from the codex-switch repo, then: cx new" -ForegroundColor Yellow
         return
     }
 

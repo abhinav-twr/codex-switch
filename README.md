@@ -32,9 +32,13 @@ Codex accounts
 
 | | |
 | :--- | :--- |
-| OS | Windows (PowerShell 5.1 or PowerShell 7+). macOS/Linux work with `pwsh`. |
+| OS | Windows, macOS or Linux. **PowerShell 7+** everywhere; Windows PowerShell 5.1 also works on Windows. |
 | `codex` | Installed and on your `PATH` (`npm i -g @openai/codex`) |
 | Account | Any ChatGPT account — the free tier is fine |
+
+All paths are built with `Join-Path`, and the installer picks the right profile location for your
+platform (`Documents\PowerShell\profile.ps1` on Windows, `~/.config/powershell/profile.ps1` on
+macOS/Linux).
 
 ## Install
 
@@ -91,7 +95,7 @@ The first run automatically **seeds `acc1`** from whatever login already exists 
 | `cx` | Interactive account list |
 | `cx 3` | Switch by list number |
 | `cx acc3` | Switch by folder name |
-| `cx god` | Switch by email fragment |
+| `cx work` | Switch by email fragment |
 | `cx 3 exec "hi"` | Run `codex` once with that account; args pass straight through |
 | `cx new` | Log in a new account in the next free slot |
 | `cx new acc11,acc12` | Log in specific slots |

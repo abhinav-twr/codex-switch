@@ -155,13 +155,13 @@ Given `cx <arg>`, the first match wins:
 2. `new` / `login` → guided login (extra args become account names)
 3. exact folder name → `acc3`
 4. integer within range → list position
-5. email substring → `god` matches `god.of.thunder…`
+5. email substring → `work` matches `work@gmail.com`
 6. nothing → interactive prompt
 
 Ambiguous email fragments are rejected rather than guessed:
 
 ```
-'aru' matches more than one profile: acc2, acc5
+'work' matches more than one profile: acc2, acc5
 ```
 
 ### `Start-CodexNewLogin` — why a child process

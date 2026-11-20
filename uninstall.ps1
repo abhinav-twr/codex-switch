@@ -28,10 +28,16 @@ $dest = Join-Path $HOME '.codex'
 Write-Host "Removing codex-switch" -ForegroundColor Cyan
 
 # --- unwire profile blocks -------------------------------------------------
-$targets = @(
-    (Join-Path $HOME 'Documents\WindowsPowerShell\profile.ps1'),
-    (Join-Path $HOME 'Documents\PowerShell\profile.ps1')
-)
+$isWindowsHost = ($env:OS -eq 'Windows_NT')
+$targets = if ($isWindowsHost) {
+    @(
+        (Join-Path $HOME 'Documents\WindowsPowerShell\profile.ps1'),
+        (Join-Path $HOME 'Documents\PowerShell\profile.ps1')
+    )
+}
+else {
+    @($PROFILE.CurrentUserAllHosts)
+}
 
 foreach ($target in $targets) {
     if (-not (Test-Path -LiteralPath $target)) { continue }
