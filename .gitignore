@@ -1,0 +1,22 @@
+# Credentials — never commit these
+auth.json
+auth-backups/
+profiles/
+
+# Codex runtime state
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.lock
+log/
+tmp/
+.sandbox/
+.sandbox-bin/
+.sandbox-secrets/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.bak
